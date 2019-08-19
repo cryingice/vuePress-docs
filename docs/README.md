@@ -19,7 +19,7 @@ footer: MIT Licensed | Copyright © 2019-present cryingice
 ### 项目简介
 ```bash
 # clone item
-git clone git@github.com:qiufeihong2018/vuepress-blog.git
+git clone https://github.com/cryingice/vuePress-docs.git
 
 # install dependencies
 npm install 
@@ -31,7 +31,7 @@ npm run dev
 npm run build
 
 # deploy to github page
-npm run d
+npm run deploy
 
 
 ::: warning 注意
