@@ -1,0 +1,16 @@
+{
+  "name": "vue-press-demo",
+  "version": "1.0.0",
+  "description": "The project for recording skilled passages",
+  "main": "index.js",
+  "dependencies": {
+    "vuepress": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "vuepress dev docs --port 10010",
+    "build": "vuepress build docs"
+  },
+  "author": "linlinduan",
+  "license": "ISC"
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div id="firld">
+    <input type="text" value="qiufeihong"/>
+</div>
+<span class="red"></span>
+
+
+<script>
+    var result = (function () {
+        var value = document.getElementById("firld").children[0].value;
+        var all = document.getElementsByTagName("span");
+
+        function change() {
+            for (let i = 0; i < all.length; i++) {
+                if (all[i].className == 'red') {
+                    all[i].innerHTML = value;
+                }
+            }
+        }
+
+        return {
+            load: function () {
+                change()
+            }
+        }
+    })();
+    result.load()
+</script>
+</body>
+</html>
