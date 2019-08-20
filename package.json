@@ -8,9 +8,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "vuepress dev docs --port 10010",
+    "dev": "vuepress dev docs",
     "build": "vuepress build docs",
-    "deploy":"bash deploy.sh"
+    "deploy": "bash deploy.sh"
   },
   "author": "linlinduan",
   "license": "ISC"

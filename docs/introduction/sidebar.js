@@ -1,11 +1,14 @@
 module.exports = [
-    // ['', 'Introduction'],
     {
-        title: '前端面试之道',
-        collapsable: true,
-        // sidebarDepth: 2,
+        title: '前端知识',
+        collapsable: false,
+        sidebarDepth: 1,
         children: [
-            'js-basis/README'
+            'js-basis/',
+            'js-special/',
+            'es6/',
+            'browser/',
+            'css-fold/',
         ]
     },
     

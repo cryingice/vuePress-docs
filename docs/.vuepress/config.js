@@ -4,10 +4,10 @@ module.exports = {
     description: '我的心路历程',
     dest: './dist',
     host: "0.0.0.0", //访问路径
-    port: '7777',
-    // head: [
-    //     ['link', {rel: 'icon', href: '/logo.gif'}]
-    // ],
+    port: 7777,
+    head: [
+        ['link', {rel: 'icon', href: '/favicon.ico'}]
+    ],
     markdown: {
         lineNumbers: true
     },

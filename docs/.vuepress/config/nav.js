@@ -6,7 +6,18 @@ module.exports = [
     {
         text:'前端面试',
         items:[
-            {text:'前端面试',link:'/interview/'}
+            {text:'前端面试',link:'/effectiveness/'}
+        ]
+    },
+    {
+        text: '效率',
+        items: [
+            {
+                text: 'markdown语法', link: '/effectiveness/markdown/'
+            },
+            // {
+            //     text: 'react源码学习', link: '/code-resource/react/'
+            // },
         ]
     },
     {

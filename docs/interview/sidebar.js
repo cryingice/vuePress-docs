@@ -3,6 +3,12 @@ module.exports = [
         title: '面试题',
         collapsable: false,
         sidebarDepth: 2,
+        children: ['interview-part-2/']
+    },
+    {
+        title: '面试题',
+        collapsable: false,
+        sidebarDepth: 2,
         children: ['question/']
     },
     {
