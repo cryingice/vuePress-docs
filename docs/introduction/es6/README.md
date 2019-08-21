@@ -4,6 +4,7 @@
 ## aync函数
 
 ### 概念:
+
 - aync函数是Gennerator函数的语法糖,能自动执行,返回一个promise对象,可看做是多个异步操作包装成的promise对象,await相当于then方法
 
 ### await处理机制
@@ -38,29 +39,15 @@
 
 - 在promise函数内,丢出错误同reject一样,可以被then第二个函数和catch函数捕获
 
-## 箭头函数 
+## 箭头函数
 
 ### 特殊例子
-```js
-function a() {  
-    return () => {  
-      return () => {  
-        console.log(this)  
-      }  
-    }  
-  }  
-  console.log(a()()())  -->window
-```
 
 - 对于这种深层嵌套的函数,this指向第一个包裹的普通函数
 
 ### bind
+
 - bind多层嵌套,this同箭头函数
-```js
-  let a = {}  
-  let fn = function () { console.log(this) }  
-  fn.bind().bind(a)() // => window
-```
 
 - 不论嵌套多少层,this由第一个bind决定
 
@@ -127,14 +114,8 @@ function a() {
 ### 对象扩展运算符
 
 - 
-```js
-	{a,...list} = {a:1,b:2,c:3}  --> list = {b:2,c:3}
-```
+
 ### 正则命名捕获组
-```js
-- let result = /(?<first>\d{3})(?<second>\W{2})/.exec('323###')  
-  let num = result.groups.first,noNumber =  result.groups.second
-```
 
 ### 支持正则后向查找
 
@@ -143,20 +124,6 @@ function a() {
 ## es5模拟es6 class
 
 ### 
-```js
-function Parent(){  
-  this.a='sd'  
-  }  
-  Parent.prototype.getValue=function (){  
-  return '333'  
-  }  
-  function Child(value){  
-  	Parent.call(this,value);  
-  }  
-  Child.prototype=Object.create(Parent.prototype,{constructor:{value:Child,enumerable:false,writable:false,configurable:true}}  
-  Child.__proto__ = Parent; //模拟extends继承静态属性  
-  var child = new Child()
-```
 
 ## 手写promise
 
@@ -182,7 +149,9 @@ function Parent(){
 
 		- 3)2)status为rejected状态,则将包裹有reject  val 的函数执行
 
-	- 3. 步骤2中封装resolve val reject 的函数为同一个,作用为判断val为promise实例对象还是非实例对象
+	- 
+
+		- 步骤2中封装resolve val reject 的函数为同一个,作用为判断val为promise实例对象还是非实例对象
 
 		- 1)promise实例对象,则,val.then(r=>resolve(r),j=>{reject(j)})
 
@@ -196,7 +165,7 @@ function Parent(){
 
 	- 3.遍历promise数组并每个实例调用then方法,因为new promise().then()为异步编程不堵塞,所以所有promise实例内部同时计时
 
-		- 1).,第一个入参里面count++ ,新的值放到resultArr里面,当count ==数组长度时,resolve(reusltArr) 
+		- 1).,第一个入参里面count++ ,新的值放到resultArr里面,当count ==数组长度时,resolve(reusltArr)
 
 		- 2).第二个入参里面,直接reject(入参值)
 
@@ -209,19 +178,25 @@ function Parent(){
 ## es 8新增的一些对象操作Api
 
 ### Object.values
+
 - Object.values为返回对象的属性值组成的数组
 
 ### Object.getOwnpropertyDescriptors()
+
 - Object.getOwnpropertyDescriptors()得到对象属性描述对象,方便对象深层次拷贝
 
 ### Object.entries()
+
 - Object.entries为返回对象键值对的组成的数组
 
 ## includes(es7)/ indexOf
 
 ### 区别
+
 - 1.includes可以判断NaN,返回布尔类型
+
 - 2.当数组里面不写明元素(比如:[1,,3]时默认第二个元素为undefined),此时只有includes能检测undefined
+
 - 3.indexOf 返回一个数字
 
 ## 异步串行
@@ -243,45 +218,46 @@ function Parent(){
 			- 同for循环,遍历数组为数组即可
 
 		- 第二
+		```js
+		  [Symbol.iterator]() : {return this;}     
+		    next: function () {    
+		        return {    
+		          next: function () {    
+		            //根据构造函数传入的数组顺序生成每次不同的promise    
+		    		return{    
+		    			value :(promise),    
+		    			done:  //数组最后一个元素得到 true    
+		    		}    
+		          }    
+		        };    
+		      }
 
 			- 自动构造一个构造函数,在构造函数内部定义Symbol.iterator 方法
-			```js
-			[Symbol.iterator]() : {return this;}   
-			  next: function () {  
-			      return {  
-			        next: function () {  
-			          //根据构造函数传入的数组顺序生成每次不同的promise  
-			  		return{  
-			  			value :(promise),  
-			  			done:  //数组最后一个元素得到 true  
-			  		}  
-			        }  
-			      };  
-			    }
-			```
+		```
 - forEach
 
 	- 原生api 不支持
 
-		- 原因: foreach入参为函数,如果要在代码使用await作为暂停符,必须给该入参函数添加异步操作符async,  
-		    而此时在遍历过程中,因为每次使用元素执行函数时发现函数为异步函数,所以跳过继续,感觉就像多个元素整体同步执行)
+		- 原因: foreach入参为函数,如果要在代码使用await作为暂停符,必须给该入参函数添加异步操作符async,
+		  而此时在遍历过程中,因为每次使用元素执行函数时发现函数为异步函数,所以跳过继续,感觉就像多个元素整体同步执行)
 
 	- 重置
-		```js
-		- async function asyncForEach(array, callback) {  
-		    for (let index = 0; index < array.length; index++) {  
-		      await callback(array[index], index, array)  
-		    }  
-		  }  
-		    
-		  async function test () {  
-		    var nums = await getNumbers()  
-		    asyncForEach(nums, async x => {  
-		      var res = await multi(x)  
-		      console.log(res)  
-		    })  
-		  }
-		```
+	  - 
+	  ```js
+	  async function asyncForEach(array, callback) {    
+	      for (let index = 0; index < array.length; index++) {    
+	        await callback(array[index], index, array)    
+	      }    
+	    }    
+	        
+	    async function test () {    
+	      var nums = await getNumbers()    
+	      asyncForEach(nums, async x => {    
+	        var res = await multi(x)    
+	        console.log(res)    
+	      })    
+	    }
+	   ```
 ## promise函数概况
 
 ### promise概念
@@ -340,15 +316,12 @@ function Parent(){
 
 - 2.入参是一个具有then方法的对象
 
-	- 会将对象包装成一个promise实例,函数内部立即执行入参对象then方法
-		```js
-		- let thenObj = {  
-		  	then(r,j){  
-		  	resolve(333)  
-		  	}  
-		  }  
-		  //原来例子: let p1 = Promise.resolve(thenObj) 转换成 p1 = new Promise((r,j)=>{ thenObj.then(r,j)   }  
-		```				
+	- 会将对象包装成一个promise实例,函数内部立即执行入参对象then方法- let thenObj = {
+	  then(r,j){    
+	    	resolve(333)    
+	    	}    
+	    }    
+	    //原来例子: let p1 = Promise.resolve(thenObj) 转换成 p1 = new Promise((r,j)=>{ thenObj.then(r,j)   }
 
 - 3.入参是一个原始值
 
@@ -357,4 +330,354 @@ function Parent(){
 ### Promise.reject方法
 
 - 会将对象包装成一个promise实例,函数内部立即执行reject(原封不动的值,无论原始值,promise,对象)
+
+## Reflect
+
+### 作用
+
+- 1. 将Object对象中明显属于语言内的方法放到Reflect上
+
+- 2. 修改Object一些方法的结果,使其更加合理.
+
+- 3. 让Object操作变为函数行为
+
+- 4. Reflect 和 Proxy 组合使用
+
+### 方法
+
+- 1. Reflect.apply(target,thisArg,args)
+
+	- 等同于 target.apply(thisArg,args)
+
+- 2. Reflect.construct(target,args)
+
+	- 等同于 new target([a,b,c])
+
+- 3. Reflect.get(target, name, receiver)
+
+	- 作用
+
+		- 查找并返回target对象的name属性
+
+	- 实例情况
+
+		- name属性为读取函数(getter)
+
+			- receiver != undefined  
+			  	
+
+				- 将getter函数中的this绑定为receiver
+
+			- receiver == undefined
+
+				- 将getter函数中的this绑定target
+
+		- name属性不为读取函数(getter)
+
+			- 等同于target.name
+
+- 4. Reflect.set(target,name,value,receiver)
+
+	- 作用
+
+		- 设置target对象的name属性等于value
+
+	- 实例情况
+
+		- 大致同Reflect.get(target,name,receiver),区别在于是针对赋值函数(setter)
+
+	- 可配合Proxy使用
+
+		- 代码示例
+
+			- ```js  
+			  let p = {  
+			    a: 'a'  
+			  };  
+			    
+			  let handler = {  
+			    set(target, key, value, receiver) {  
+			      console.log('set');  
+			      Reflect.set(target, key, value, receiver)  
+			    },  
+			    defineProperty(target, key, attribute) {  
+			      console.log(target,key,attribute,'defineProperty');  
+			      Reflect.defineProperty(target, key, attribute);  
+			    }  
+			  };  
+			    
+			  let obj = new Proxy(p, handler);  
+			  obj.a = 'A';  
+			  // set  
+			  //{a: "a"} "a" {value: "A"} "defineProperty"   
+			  ```
+
+		- 分析
+
+			- obj.a = ‘A’ -> Proxy.set(即handler.set) -> Reflect.set(target,key,value,receiver) (其中:receiver即为obj) ->Proxy.defineProperty拦截 ->调用Reflect.defineProperty
+
+- 5. Reflect.has(obj,name)
+
+	- 作用
+
+		- 等同于 name in obj
+
+	- 注意点
+
+		- 无论是Reflect.has(obj,name) 还是 in ,都会到对象的原型链上查找是否有满足条件的name
+
+- 6. Reflect.deleteProperty(obj,name)
+
+	- 作用
+
+		- 等同于 delete obj[name]
+
+	- 返回值
+
+		- 布尔类型
+
+		- true
+
+			- 删除成功/删除的属性不存在
+
+		- false
+
+			- 删除失败/删除的属性依然存在(比如 Object.freeze(obj)的obj上的已有属性)
+
+- 7. Reflect.getPrototypeOf(obj)
+
+	- 作用
+
+		- 等同于Object.getPrototypeOf(obj)
+
+	- 与Object.getPrototypeOf()的区别
+
+		- Reflect的方法入参必须是对象,否则报错
+
+		- Object的方法入参会隐式将非对象数据转为对象再进行处理
+
+- 8. Reflect.setPrototypeOf(obj,newProto)
+
+	- 作用
+
+		- 等同于Object.setPrototypeOf(obj,newProto)
+
+	- 返回值
+
+		- 设置成功返回true,失败返回false(obj被Object.freeze()冻结或者Oject.seal()封装了)
+
+- 9. Reflect.defineProperty(target,propertyKey,attributes)
+
+	- 作用
+
+		- 等同于Object.defineProperty(target,propertyKey,attributes)
+
+- 10. Reflect.getOwnPropertyDescriptor(target,propertyKey)
+
+	- 作用
+
+		- 等同于 Object.getOwnPropertyDescription(target,propertyKey)
+
+- 11. Reflect.isExtensible(target)
+
+	- 作用
+
+		- 判断target是否可扩展,等同于Object.isExtensible(target)
+
+	- 注意
+
+		- target不可扩展
+
+			- target非对象
+
+				- 报错
+
+			- target 被冻结或者被封装了
+
+				- 返回false
+
+		- target可扩展
+
+			- target为非冻结或者封装的对象
+
+- 12. Reflect.preventExtensions(target)
+
+	- 作用
+
+		- 让target变得不可扩展
+
+- 13. Reflect.ownKeys(target)
+
+	- 作用
+
+		- 返回对象的所有存在于自身的属性(包括symbol属性)
+
+	- 与Object.keys(target)的区别
+
+		- Object的方法只能返回非Symbol的key值)
+
+## Proxy
+
+### 概述
+
+- 1. 对目标设置一层拦截器,当对该对象访问或者改写时都必须通过该层拦截器
+
+- 2. 在拦截器中可以通过代理来改变数据的来源
+
+### 代码
+
+- var proxy = new Proxy(target,handler)
+
+### 代码分析
+
+- 如果handler为空对象,访问proxy等同于访问target
+
+### 拦截操作
+
+- get(target,propKey,receiver)
+
+	- 拦截对象属性的读取操作
+
+- set(target,propKey,value,receiver)
+
+	- 拦截对象属性设置操作
+
+- has(target,propKey)
+
+	- 拦截propKey in proxy的in操作符 和 Reflect.has(target,propKey)
+
+- deleteProperty(target,propKey)
+
+	- 拦截delete、Reflect(target,propKey)操作
+
+- Ownkeys(target)
+
+	- 拦截for...in,Object.keys()....等操作
+
+- getOwnPropertyDescriptor(target, propKey)
+
+	- 拦截Object.getOwnPropertyDescriptor(proxy, propKey)
+
+- apply(target,object,args)
+
+	- 拦截函数调用(纯调用、call调用、apply调用)
+
+- construct(target, args, newTarget)
+
+	- new 操作时调用,newTarget为new Proxy(...)得到的对象
+
+- ...
+
+## Iterator/for ... of
+
+### Iterator
+
+- 作用
+
+	- 任何数据结构只要有Iterator接口,就可以完成for...of的遍历操作
+
+- 位置
+
+	- es6规定,默认的Iterator接口部署在Symbol.iterator属性上
+
+- 具备接口的结构数据
+
+	-  Array / Map /Set/String /TypedArray /arguments /NodeList对象
+
+- 对象
+
+	- 对象是没有iterator遍历器的
+
+- 调用Iterator的场合
+
+	- 结构赋值
+
+	- 扩展运算符
+
+	- yield*
+
+	- for...of
+
+	- Array.from()
+
+	- Map/Set
+
+	- Promise.all(newObj)/Promise.race(newObj)
+
+		- 解析newObj的迭代器得到数组装的多个promise数据
+
+- Iterator接口于Generator函数
+
+	- 最简单实现
+
+		- ```js
+		  let myIterable = {  
+		    [Symbol.iterator]: function* () {  
+		      yield 1;  
+		      yield 2;  
+		      yield 3;  
+		    }  
+		  }  
+		  [...myIterable] // [1, 2, 3]  
+		    
+		  // 或者采用下面的简洁写法  
+		    
+		  let obj = {  
+		    * [Symbol.iterator]() {  
+		      yield 'hello';  
+		      yield 'world';  
+		    }  
+		  };  
+		    
+		  for (let x of obj) {  
+		    console.log(x);  
+		  }  
+		  // "hello"  
+		  // "world"  
+		    
+		  ```
+
+### for...of
+
+- 只要数据结构有正确的Symbol.iterator属性值,就可以用for...of遍历
+
+- 与for...in的区别
+
+	- for...of得到的是键值
+
+	- for...in用于对象中,得到的是键名
+
+### 手动模拟一个iterator
+
+- ```js
+  class MyIterator{  
+      constructor(enNum){  
+          this.startNum = 0;  
+          this.enNum = enNum;  
+          let that =this;  
+          this[Symbol.iterator]= ()=>{  
+              return {  
+               next:that.next.bind(that)  
+              }  
+          }  
+      }  
+        
+      next(){  
+          if (this.startNum <= this.enNum) {  
+             return {value:(this.startNum++) *2}  
+          } else {  
+  		this.startNum =0;  
+              return {done:true}  
+          }  
+      }  
+  }  
+  let re = new MyIterator(5);  
+  console.log(re);  
+  for (const iterator of re) {  
+      console.log(iterator)  
+  }  
+  //输出 0 2 4 6 8 10  
+  console.log([...re]);  
+  //输出 [0 ,2 ,4, 6, 8, 10]
+  ```
 

@@ -17,16 +17,19 @@
 
 - 定义
 	```js
-	- Object.defineProperty(obj,attr,{//以下为默认值(何为默认值:描述对象里面不设置时的默认值)  
-	  	configurable:false,	//和 重新设置属性描述器、delete可用性有关  
-	  	enumerable:false,	//和遍历性有关  
-	  	value:undefined,		//和读取的值有关  
-	  	writable:false,		//和属性设置性有关  
-	  	  
-	  })
-
-	- { //注意: 1.和value 和 writable两个属性相斥,不能同时存在  
-	  	//2.函数内涉及的属性不能用设置描述器时的属性(attr),否则会产生无限自调用,死循环  
+	- let obj = {}
+	  
+	- Object.defineProperty(obj,'attr',{});
+	- Object.getOwnPropertyDescriptor(obj,'attr');  
+	
+	// 输出: {configurable: false,enumerable: false,value: undefined,writable: false}
+	  obj.another = 1
+	  - Object.getOwnPropertyDescriptor(obj,'another');
+	// 输出: {configurable: true,enumerable: true,value: 4,writable: true}
+	// 原因:浏览器默认在特定操作(给对象的新属性赋值)过程中默认给新属性添加了一个属性描述符,前提条件:赋值前属性还未进行手动设置描述器
+ 		//注意:
+	- { //1.value 和 writable两个属性与get/set 存取操作符相斥,不能同时存在  
+	  	//2.函数内涉及的属性不能用设置描述器时的属性(attr),否则会产生无限自调用,死循环,如下:  
 	  	get(){  
 	  		return this[otherAttr]  
 	  	},  
@@ -37,7 +40,7 @@
 	```
 - 获取
 
-	- Object.getOwnPropertyDescriptor()
+	- Object.getOwnPropertyDescriptor(obj,'attr')
 
 ### for...in / Object.keys()
 
@@ -53,11 +56,15 @@
 
 - freeze
 
-	- 冻结对象,禁止设置原有的属性值,也不能新添属性,不能更改对象的可枚举性和可配置型
+	- 冻结对象,对象不能增删改已有属性,也不能新添属性,不能更改对象的属性描述器
 
-- seal
+- sea1l
 
 	- 封闭对象,阻止添加新属性并将当前已有属性设为不可配置,当前属性的值若可写则可写
+- 区别
+
+	- freeze会将属性描述符writable设为false,seal会保持writable的属性值,换句话说用在调用Object.seal()之前
+	若writable为true,则调用后该属性值可赋值,否则赋值不成功
 
 ### Object.getOwnPropertyDescriptors(obj)
 
