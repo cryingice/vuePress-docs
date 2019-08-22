@@ -649,35 +649,35 @@
 
 ### 手动模拟一个iterator
 
-- ```js
-  class MyIterator{  
-      constructor(enNum){  
-          this.startNum = 0;  
-          this.enNum = enNum;  
-          let that =this;  
-          this[Symbol.iterator]= ()=>{  
-              return {  
-               next:that.next.bind(that)  
-              }  
-          }  
-      }  
-        
-      next(){  
-          if (this.startNum <= this.enNum) {  
-             return {value:(this.startNum++) *2}  
-          } else {  
-  		this.startNum =0;  
-              return {done:true}  
-          }  
-      }  
-  }  
-  let re = new MyIterator(5);  
-  console.log(re);  
-  for (const iterator of re) {  
-      console.log(iterator)  
-  }  
-  //输出 0 2 4 6 8 10  
-  console.log([...re]);  
-  //输出 [0 ,2 ,4, 6, 8, 10]
+```js
+	class MyIterator{  
+		startNum = 0; 
+		[Symbol.iterator](){ 
+			let that = this; 
+				return {  
+				next:that.next.bind(that)  
+				}  
+			}  
+		constructor(enNum){  
+			this.enNum = enNum;  
+		}  
+		
+		next(){  
+			if (this.startNum <= this.enNum) {  
+			return {value:(this.startNum++) *2}  
+			} else {  
+				this.startNum =0;  
+				return {done:true}  
+			}  
+		}  
+	}  
+	let re = new MyIterator(5);  
+	console.log(re);  
+	for (const iterator of re) {  
+		console.log(iterator)  
+	}  
+	//输出 0, 2, 4, 6, 8, 10
+	console.log([...re])
+	//输出 [0, 2, 4, 6, 8, 10]
   ```
 

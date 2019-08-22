@@ -43,6 +43,14 @@ module.exports = [
         ]
     },
     {
+        text: '私人空间',
+        items: [
+            {
+                text: '喜欢的歌曲歌词', link: '/private-fold/favorite-lyric/'
+            }
+        ]
+    },
+    {
         text: '个人主页',
         items: [
             {
